@@ -1,0 +1,3 @@
+rootProject.name = 'KhuPlayground'
+
+include ':app'
