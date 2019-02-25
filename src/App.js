@@ -1,21 +1,10 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import Calculator from "./screens/Calculator";
 
 class App extends Component {
   render() {
-    return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#FFFFFF"
-        }}
-      >
-        <Text>{"To be continued..."}</Text>
-      </View>
-    );
+    return <Calculator mamad={"کلاس RN"} />;
   }
 }
 
