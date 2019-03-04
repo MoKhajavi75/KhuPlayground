@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity
+} from "react-native";
 import Axios from "axios";
 
 class List extends Component {
@@ -7,51 +13,78 @@ class List extends Component {
     super(props);
 
     this.state = {
+      isLoading: true,
       data: []
     };
+
+    this.loadData();
   }
 
-  render() {
+  loadData() {
+    Axios.get("https://rallycoding.herokuapp.com/api/music_albums").then(
+      response => this.setState({ data: response.data, isLoading: false })
+    );
+  }
+
+  renderItem({ item }) {
     return (
-      <View
+      <TouchableOpacity
         style={{
           flex: 1,
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          alignSelf: "stretch",
+          backgroundColor: "#FF7F50",
+          paddingVertical: 20,
+          marginBottom: 10,
+          borderRadius: 10
         }}
+        onPress={() => alert(item.artist)}
       >
-        <FlatList
-          style={{ flex: 1, alignSelf: "stretch", margin: 20 }}
-          data={this.state.data}
-          renderItem={({ item }) => {
-            return (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  alignSelf: "stretch",
-                  backgroundColor: "#F0F8FF",
-                  paddingVertical: 20,
-                  marginBottom: 10,
-                  borderRadius: 10
-                }}
-              >
-                <Text
-                  style={{
-                    color: "red",
-                    fontSize: 20
-                  }}
-                >
-                  {item.name}
-                </Text>
-              </View>
-            );
+        <Text
+          style={{
+            color: "white",
+            fontWeight: "bold",
+            fontSize: 32
           }}
-          keyExtractor={item => String(item.ID)}
-        />
-      </View>
+        >
+          {item.title}
+        </Text>
+      </TouchableOpacity>
     );
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <ActivityIndicator size="large" color="red" />
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <FlatList
+            style={{ flex: 1, alignSelf: "stretch", margin: 20 }}
+            data={this.state.data}
+            renderItem={({ item }) => this.renderItem({ item })}
+            keyExtractor={item => String(item.ID)}
+          />
+        </View>
+      );
+    }
   }
 }
 
