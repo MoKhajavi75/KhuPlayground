@@ -4,7 +4,8 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
 import Axios from "axios";
 
@@ -50,6 +51,11 @@ class List extends Component {
         >
           {item.title}
         </Text>
+
+        <Image
+          style={{ width: 300, height: 300, resizeMode: "center" }}
+          source={{ uri: item.image }}
+        />
       </TouchableOpacity>
     );
   }
